@@ -1,4 +1,4 @@
-import keys from 'keys.js';
+import keys from './keys.js';
 //let lang;
 
 class Keyboard {
