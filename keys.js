@@ -251,12 +251,11 @@ const keys = [
             code: 'Backslash',
             type: 'simple'
         },
-
         {
-            content: 'Done',
-            code: 'Done',
+            content: 'del',
+            code: 'Delete',
             type: 'spec'
-        }
+        },
     ],
     [
         {
@@ -550,8 +549,8 @@ const keys = [
             change: 'change',
         },
         {
-            content: 'context-menu',
-            code: 'ContextMenu',
+            content: 'Done',
+            code: 'Done',
             type: 'spec'
         },
         {
@@ -582,13 +581,11 @@ const keys = [
             code: 'Space',
             type: 'spec',
         },
-
         {
             content: 'layout',
             code: 'Layout',
             type: 'spec'
         },
-
         {
             content: 'arrow-left',
             code: 'ArrowLeft',

@@ -11,7 +11,6 @@ class Keyboard {
         this.isCtrl = false;
         this.isAlt = false;
         this.lang = 'en';
-
     }
 
     init() {
@@ -59,13 +58,11 @@ class Keyboard {
         document.body.append(this.container);
 
         this._addBtnEL();
-
     }
 
     _createKeys() {
         const fragment = document.createDocumentFragment();
 
-        // Creates HTML for an icon
         const createIconHTML = icon_name => `<i class="material-icons">${icon_name}</i>`;
 
         for (let i = 0; i < keys.length; i++) {
@@ -149,7 +146,6 @@ class Keyboard {
                         break;
 
                     default:
-
                         if (Array.isArray(key.content)) {
                             btn.innerHTML += `<sup>${key.content[0]}</sup>`;
                             btn.innerHTML += `${key.content[1]}`;
@@ -164,12 +160,9 @@ class Keyboard {
             });
         }
         return fragment;
-
     }
 
     _addBtnEL() {
-
-        //const textarea = document.querySelector('.input');
 
         document.querySelectorAll('.input').forEach(element => {
             element.addEventListener('focus', () => {
@@ -196,20 +189,22 @@ class Keyboard {
             event.preventDefault();
             const btns = document.querySelectorAll('button');
             const activeBtn = [...btns].filter(btn => !btn.classList.contains('invisible') && btn.getAttribute('data-code') === event.code)[0];
-            activeBtn.classList.add('active');
-            if (event.altKey || event.ctrlKey) {
-                if (event.code == 'ShiftLeft') {
-                    this._changeKeyboardLayout();
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                if (event.altKey || event.ctrlKey) {
+                    if (event.code == 'ShiftLeft') {
+                        this._changeKeyboardLayout();
+                    }
+                } else {
+                    this._handleBtn(activeBtn);
                 }
-            } else {
-                this._handleBtn(activeBtn);
             }
         });
 
         document.addEventListener('keyup', (event) => {
             const btns = document.querySelectorAll('button');
             const activeBtn = [...btns].filter(btn => !btn.classList.contains('invisible') && btn.getAttribute('data-code') === event.code)[0];
-            setTimeout(activeBtn.classList.remove('active'), 300);
+            if (activeBtn) { setTimeout(activeBtn.classList.remove('active'), 300); }
         });
     }
 
@@ -223,15 +218,19 @@ class Keyboard {
             case 'ArrowRight':
                 this.setCursorPosition(textarea, position.start + 1, position.end + 1);
                 break;
+
             case 'ArrowLeft':
                 this.setCursorPosition(textarea, position.start - 1, position.end - 1);
                 break;
+
             case 'ArrowDown':
                 this.setCursorPosition(textarea, position.start + textareaLength, position.end + textareaLength);
                 break;
+
             case 'ArrowUp':
                 this.setCursorPosition(textarea, position.start - textareaLength, position.end - textareaLength);
                 break;
+
             case 'Done':
             case 'Escape':
                 btn.addEventListener('click', () => {
@@ -254,8 +253,20 @@ class Keyboard {
                 break;
 
             case 'Backspace':
-                textarea.value = textarea.value.substring(0, position.start - 1) + textarea.value.substring(position.start);
-                this.setCursorPosition(textarea, position.start - 1, position.end - 1);
+                if (document.getSelection().toString().length !== 0) { document.getSelection().deleteFromDocument(); }
+                else {
+
+                    textarea.value = textarea.value.substring(0, position.start - 1) + textarea.value.substring(position.start);
+                    this.setCursorPosition(textarea, position.start - 1, position.end - 1);
+                }
+                break;
+
+            case 'Delete':
+                if (document.getSelection().toString().length !== 0) { document.getSelection().deleteFromDocument(); }
+                else {
+                    textarea.value = textarea.value.substring(0, position.start) + textarea.value.substring(position.start + 1);
+                    this.setCursorPosition(textarea, position.start + 1, position.end);
+                }
                 break;
 
             case 'CapsLock':
@@ -272,19 +283,19 @@ class Keyboard {
 
             case 'ShiftLeft':
                 if (this.isControl || this.isAlt) {
-                        this._changeKeyboardLayout();
-                        this.isControl = false;
-                        this.isAlt = false;
-                    }
+                    this._changeKeyboardLayout();
+                    this.isControl = false;
+                    this.isAlt = false;
+                }
                 else
-                this.isShift = true;
+                    this.isShift = true;
                 break;
 
             case 'ControlLeft':
                 this.isControl = true;
                 break;
 
-                case 'AltLeft':
+            case 'AltLeft':
                 this.isAlt = true;
                 break;
 
@@ -352,8 +363,8 @@ class Keyboard {
         this.hidden = false;
         this.keyBoard.classList.remove('hidden');
         this.hide.textContent = 'Hide';
-
     }
+    
     close() {
         this.hidden = true;
         this.keyBoard.classList.add('hidden');

@@ -127,6 +127,7 @@ textarea {
     border-bottom: solid #060707 3px;
     border-color: rgba(0, 255, 255, 0.4) #060707 #060707 rgba(0, 255, 255, 0.4);
     transition: 0.3s;
+
     &:hover,
     &:focus {
         text-shadow: #00ffff 1px 0 20px;
@@ -144,14 +145,17 @@ textarea {
         width: 0;
         height: 0;
     }
+
     &::before {
         top: 0;
         left: 0;
     }
+
     &::after {
         bottom: 0;
         right: 0;
     }
+
     &.active::after,
     &.active::before {
         box-shadow: inset 0 5px 10px #00ffff;
@@ -159,10 +163,12 @@ textarea {
         width: 100%;
         height: 100%;
     }
+
     &.active::before {
         border-color: $color-light-blue;
         transition: width 0.15s ease-out, height 0.15s ease-out 0.15s;
     }
+
     &.active::before {
         border-top-color: $color-light-blue;
         border-right-color: $color-light-blue;
@@ -179,6 +185,7 @@ textarea {
         background: rgba(0, 255, 255, 0.4);
         border-radius: 50%;
     }
+    
     &__on::after {
         content: "";
         top: 10px;
