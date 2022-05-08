@@ -36,6 +36,7 @@ sup {
 
 textarea {
     display: block;
+    outline: none;
     margin: 30px auto;
     width: 90%;
     height: 50vh;
@@ -44,7 +45,7 @@ textarea {
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.12);
     color: white;
-    border: $color-light-blue;
+    border: 2px solid $color-light-blue;
     box-shadow: inset 0 0 50px $color-light-blue;
     text-shadow: $color-light-blue 1px 0 20px;
 
@@ -123,11 +124,13 @@ textarea {
     text-align: center;
     border-bottom: solid #060707 3px;
     border-color: rgba(0, 255, 255, 0.4)  #060707 #060707 rgba(0, 255, 255, 0.4);
-    &:hover
+    &:hover,
+    &:focus
      {
         text-shadow: #00ffff 1px 0 20px;
         box-shadow: 0 5px 10px #00ffff;
     }
+    &:active,
     &.active{
         box-shadow:inset 0 5px 10px #00ffff;
     }
