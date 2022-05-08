@@ -1,4 +1,4 @@
-import Keyboard from '/keyboard.js';
+import Keyboard from './keyboard.js';
 let lang = localStorage.getItem('lang') || 'en';
 const keyboard = new Keyboard();
 window.onload = () => {
