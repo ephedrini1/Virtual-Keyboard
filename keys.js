@@ -6,7 +6,7 @@ const keys = [
             type: 'spec',
         },
         {
-            content: ['~', '\`'],
+            content: ['~', '`'],
             code: 'Backquote',
             type: 'simple',
             change: 'change',

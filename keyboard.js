@@ -1,5 +1,5 @@
 import keys from '/keys.js';
-let lang;
+//let lang;
 
 class Keyboard {
 
@@ -8,7 +8,10 @@ class Keyboard {
         this.value = '';
         this.isCaps = false;
         this.isShift = false;
-        this.lang = true;
+        this.isCtrl = false;
+        this.isAlt = false;
+        this.lang = 'en';
+
     }
 
     init() {
@@ -18,9 +21,14 @@ class Keyboard {
         document.body.append(header);
 
         const headerDescription = document.createElement('p');
-        headerDescription.innerText = "ОС: Windows";
+        headerDescription.innerText = "ОS: Windows";
         headerDescription.classList.add('title__description');
         document.body.appendChild(headerDescription);
+
+        const message = document.createElement('p');
+        message.innerText = "press ALT + SHIFT or CTRL + SHIFT to switch language";
+        message.classList.add('title__description');
+        document.body.appendChild(message);
 
         const textarea = document.createElement('textarea');
         textarea.classList.add('input');
@@ -36,7 +44,7 @@ class Keyboard {
 
         this.hide = document.createElement('button');
         this.hide.classList.add('hide');
-        this.hide.textContent = 'Show'
+        this.hide.textContent = 'Show';
 
         this.keysContainer = document.createElement('div');
         this.keysContainer.classList.add('keyboard__keys');
@@ -48,7 +56,7 @@ class Keyboard {
         this.keyBoard.append(this.keysContainer);
         this.container.append(this.keyBoard);
 
-        document.body.append(this.container)
+        document.body.append(this.container);
 
         this._addBtnEL();
 
@@ -65,8 +73,8 @@ class Keyboard {
             row.classList.add('row');
             keys[i].forEach(key => {
                 const btn = document.createElement('button');
-                if (key.lang) { btn.classList.add(`${key.lang}`) };
-                if (key.change) { btn.classList.add(`${key.change}`) }
+                if (key.lang) { btn.classList.add(`${key.lang}`); }
+                if (key.change) { btn.classList.add(`${key.change}`); }
                 btn.classList.add('btn', `btn__${key.type}`);
                 btn.setAttribute('data-code', key.code);
 
@@ -77,7 +85,7 @@ class Keyboard {
                         break;
 
                     case 'Caps Lock':
-                        btn.classList.add('btn__big');
+                        btn.classList.add('btn__big', 'btn__off');
                         btn.innerHTML = createIconHTML('keyboard_capslock');
                         break;
 
@@ -153,7 +161,7 @@ class Keyboard {
                 fragment.appendChild(row);
                 row.appendChild(btn);
 
-            })
+            });
         }
         return fragment;
 
@@ -161,26 +169,26 @@ class Keyboard {
 
     _addBtnEL() {
 
-        const textarea = document.querySelector('.input');
+        //const textarea = document.querySelector('.input');
 
         document.querySelectorAll('.input').forEach(element => {
             element.addEventListener('focus', () => {
                 this.open();
-            })
+            });
         });
 
         document.querySelector('.hide').addEventListener('click', () => {
-            this.toggle()
+            this.toggle();
         }
         );
 
         document.querySelectorAll('.btn').forEach(btn => btn.addEventListener('mousedown', () => {
-           // btn.classList.add('active');
+            btn.classList.add('active');
             this._handleBtn(btn);
         }));
 
         document.querySelectorAll('.btn').forEach(btn => btn.addEventListener('mouseup', () => {
-           // btn.classList.remove('active');
+            setTimeout(btn.classList.remove('active'), 300);
             document.querySelector('textarea').focus();
         }));
 
@@ -201,7 +209,7 @@ class Keyboard {
         document.addEventListener('keyup', (event) => {
             const btns = document.querySelectorAll('button');
             const activeBtn = [...btns].filter(btn => !btn.classList.contains('invisible') && btn.getAttribute('data-code') === event.code)[0];
-            activeBtn.classList.remove('active');
+            setTimeout(activeBtn.classList.remove('active'), 300);
         });
     }
 
@@ -210,7 +218,7 @@ class Keyboard {
         const textarea = document.querySelector('.input');
         const position = this.getCursorPosition(textarea);
 
-        let textareaLength = textarea.value.split('\n')[0].length || textarea.value.split('\r\n')[0].length
+        let textareaLength = textarea.value.split('\n')[0].length || textarea.value.split('\r\n')[0].length;
         switch (btn.getAttribute('data-code')) {
             case 'ArrowRight':
                 this.setCursorPosition(textarea, position.start + 1, position.end + 1);
@@ -228,10 +236,9 @@ class Keyboard {
             case 'Escape':
                 btn.addEventListener('click', () => {
                     this.close();
-                })
+                });
                 break;
             case 'Enter':
-                console.log(position)
                 textarea.value = textarea.value.substring(0, position.start) + '\n' + textarea.value.substring(position.start);
                 this.setCursorPosition(textarea, position.end + 1, position.end + 1);
                 break;
@@ -243,7 +250,7 @@ class Keyboard {
 
             case 'Tab':
                 textarea.value += '    ';
-                this.setCursorPosition(textarea, position.start + 4, position.end + 4)
+                this.setCursorPosition(textarea, position.start + 4, position.end + 4);
                 break;
 
             case 'Backspace':
@@ -253,10 +260,32 @@ class Keyboard {
 
             case 'CapsLock':
                 this.isCaps = !this.isCaps;
+                if (this.isCaps) {
+                    btn.classList.remove('btn__off');
+                    btn.classList.add('btn__on');
+                }
+                else {
+                    btn.classList.remove('btn__on');
+                    btn.classList.add('btn__off');
+                }
                 break;
 
             case 'ShiftLeft':
+                if (this.isControl || this.isAlt) {
+                        this._changeKeyboardLayout();
+                        this.isControl = false;
+                        this.isAlt = false;
+                    }
+                else
                 this.isShift = true;
+                break;
+
+            case 'ControlLeft':
+                this.isControl = true;
+                break;
+
+                case 'AltLeft':
+                this.isAlt = true;
                 break;
 
             case 'Layout':
@@ -269,11 +298,15 @@ class Keyboard {
                     const btnTxt = this.isCaps || this.isShift ? key[0] : key[1];
                     textarea.value = textarea.value.substring(0, position.start) + btnTxt + textarea.value.substring(position.start);
                     this.isShift = false;
+                    this.isCtrl = false;
+                    this.isAlt = false;
                     this.setCursorPosition(textarea, position.start + 1, position.end + 1);
                 }
                 else if (btn.classList.contains('btn__simple') && !btn.classList.contains('invisible')) {
                     const btnTxt = this.isCaps || this.isShift ? btn.textContent : btn.textContent.toLowerCase();
                     textarea.value = textarea.value.substring(0, position.start) + btnTxt + textarea.value.substring(position.start);
+                    this.isCtrl = false;
+                    this.isAlt = false;
                     this.isShift = false;
                     this.setCursorPosition(textarea, position.start + 1, position.end + 1);
                 }
@@ -302,15 +335,15 @@ class Keyboard {
     }
 
     _changeKeyboardLayout() {
-        if (this.lang = 'en') {
+        if (this.lang === 'en') {
             this.lang = 'ru';
         }
-        else { this.lang = 'en' }
+        else { this.lang = 'en'; }
 
-        lang = localStorage.setItem('lang', this.lang);
+        localStorage.setItem('lang', this.lang);
         document.querySelectorAll('.btn').forEach((item) => {
             if (item.classList.contains('change')) {
-                item.classList.toggle('invisible')
+                item.classList.toggle('invisible');
             }
         });
     }
