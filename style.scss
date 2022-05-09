@@ -1,0 +1,246 @@
+@import "jekyll-theme-primer";
+$color-body-dark: #25292b;
+$color-light-blue: #00ffff;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: $color-light-blue;
+    background: $color-body-dark;
+}
+sup {
+    position: absolute;
+    font-size: 0.5em;
+    top: 10%;
+    left: 10%;
+}
+
+.title {
+    text-align: center;
+    font-family: "Comforter", cursive;
+    font-size: 60px;
+    line-height: 1.2;
+    font-weight: 400;
+    margin-top: 30px;
+    transform: rotate(-10deg);
+}
+
+.title__description {
+    max-width: fit-content;
+    margin: 0 auto;
+}
+
+textarea {
+    display: block;
+    outline: none;
+    margin: 30px auto;
+    width: 90%;
+    height: 50vh;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5em;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: white;
+    border: 2px solid $color-light-blue;
+    box-shadow: inset 0 0 50px $color-light-blue;
+    text-shadow: $color-light-blue 1px 0 20px;
+
+    &::placeholder {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 2rem;
+        color: $color-light-blue;
+        text-shadow: $color-light-blue 1px 0 20px;
+        opacity: 0.5;
+    }
+}
+
+.keyboard__container {
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
+    width: 100%;
+    background-color: $color-body-dark;
+    position: fixed;
+    bottom: 0;
+}
+
+.keyboard {
+    margin: 1em;
+    opacity: 1;
+    height: auto;
+    transition: 0.5s;
+
+    &.hidden {
+        height: 0px;
+        margin: 0px;
+        transition: 0.5s;
+    }
+}
+
+.hide {
+    position: absolute;
+    top: -38px;
+    left: 40px;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+    border-color: rgba(0, 255, 255, 0.4) #060707 #191c1d rgba(0, 255, 255, 0.4);
+    box-shadow: 5px 0px 10px $color-light-blue;
+    background: #191c1d;
+    color: $color-light-blue;
+    text-align: center;
+    transition: 0.3s;
+
+    &:hover {
+        text-shadow: $color-light-blue 1px 0 20px;
+        box-shadow: inset 0px 5px 10px $color-light-blue;
+        transition: 0.3s;
+    }
+}
+
+.keyboard__keys {
+    text-align: center;
+}
+
+.btn {
+    position: relative;
+    height: 45px;
+    width: 4.8%;
+    margin: 2px;
+    font-size: 1.5rem;
+    outline: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    padding: 0;
+    position: relative;
+    background: #191c1d;
+    color: #00ffff;
+    border-radius: 10px;
+    text-align: center;
+    border-bottom: solid #060707 3px;
+    border-color: rgba(0, 255, 255, 0.4) #060707 #060707 rgba(0, 255, 255, 0.4);
+    transition: 0.3s;
+
+    &:hover,
+    &:focus {
+        text-shadow: #00ffff 1px 0 20px;
+        box-shadow: 0 5px 10px #00ffff;
+        transition: 0.3s;
+    }
+
+    &::before,
+    &::after {
+        box-sizing: inherit;
+        content: "";
+        position: absolute;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        width: 0;
+        height: 0;
+    }
+
+    &::before {
+        top: 0;
+        left: 0;
+    }
+
+    &::after {
+        bottom: 0;
+        right: 0;
+    }
+
+    &.active::after,
+    &.active::before {
+        box-shadow: inset 0 5px 10px #00ffff;
+        transition: 0.15s;
+        width: 100%;
+        height: 100%;
+    }
+
+    &.active::before {
+        border-color: $color-light-blue;
+        transition: width 0.15s ease-out height 0.15s, ease-out 0.15s;
+    }
+
+    &.active::before {
+        border-top-color: $color-light-blue;
+        border-right-color: $color-light-blue;
+        transition: border-color 0s ease-out 0.15s, width 0.15s ease-out, height 0.15s ease-out 0.15s;
+    }
+
+    &__off::after {
+        content: "";
+        top: 10px;
+        right: 10px;
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: rgba(0, 255, 255, 0.4);
+        border-radius: 50%;
+        animation: 0.3s switch-off ease-out;
+    }
+    
+    &__on::after {
+        content: "";
+        top: 10px;
+        right: 10px;
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: $color-light-blue;
+        border-radius: 50%;
+        transition: 0.3s;
+        animation: 0.3s switch-on;
+    }
+}
+
+@keyframes switch-on {
+    0% {
+        background-color: rgba(0, 255, 255, 0.4);
+    }
+    50% {
+        background-color: #00ffff;
+        box-shadow: 0 0 10px #00ffff;
+    }
+    100% {
+        background-color: #00ffff;
+    }
+}
+
+@keyframes switch-off {
+    0% {
+        background-color: #00ffff;
+    }
+    50% {
+        background-color: #00ffff;
+        box-shadow: 0 0 10px #00ffff;
+    }
+    100% {
+        background-color: rgba(0, 255, 255, 0.4);
+    }
+}
+
+.btn__big {
+    width: 15%;
+}
+
+.space {
+    width: 30.5%;
+    max-width: 500px;
+}
+
+.material-icons {
+    max-width: 24px;
+}
+
+.invisible {
+    display: none;
+}
