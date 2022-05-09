@@ -176,7 +176,7 @@ class Keyboard {
         );
 
         document.querySelectorAll('.btn').forEach(btn => btn.addEventListener('mousedown', () => {
-            btn.classList.add('active');
+           if(btn.getAttribute('data-code') !== 'CapsLock') {btn.classList.add('active')};
             this._handleBtn(btn);
         }));
 
@@ -186,11 +186,11 @@ class Keyboard {
         }));
 
         document.addEventListener('keydown', (event) => {
-            event.preventDefault();
+            if(event.code !== 'F12' && event.code !== 'F5') {event.preventDefault()};
             const btns = document.querySelectorAll('button');
             const activeBtn = [...btns].filter(btn => !btn.classList.contains('invisible') && btn.getAttribute('data-code') === event.code)[0];
             if (activeBtn) {
-                activeBtn.classList.add('active');
+                if(activeBtn.getAttribute('data-code') !== 'CapsLock') {activeBtn.classList.add('active')};
                 if (event.altKey || event.ctrlKey) {
                     if (event.code == 'ShiftLeft') {
                         this._changeKeyboardLayout();

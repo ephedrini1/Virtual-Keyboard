@@ -163,7 +163,7 @@ textarea::placeholder {
 
 .btn.active::before {
   border-color: #00ffff;
-  transition: width 0.15s ease-out, height 0.15s ease-out 0.15s;
+  transition: width 0.15s ease-out height 0.15s, ease-out 0.15s;
 }
 
 .btn.active::before {
@@ -179,8 +179,9 @@ textarea::placeholder {
   position: absolute;
   width: 8px;
   height: 8px;
-  background: rgba(0, 255, 255, 0.4);
+  background-color: rgba(0, 255, 255, 0.4);
   border-radius: 50%;
+  animation: 0.3s switch-off ease-out;
 }
 
 .btn__on::after {
@@ -190,8 +191,36 @@ textarea::placeholder {
   position: absolute;
   width: 8px;
   height: 8px;
-  background: #00ffff;
+  background-color: #00ffff;
   border-radius: 50%;
+  transition: 0.3s;
+  animation: 0.3s switch-on;
+}
+
+@keyframes switch-on {
+  0% {
+    background-color: rgba(0, 255, 255, 0.4);
+  }
+  50% {
+    background-color: #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+  }
+  100% {
+    background-color: #00ffff;
+  }
+}
+
+@keyframes switch-off {
+  0% {
+    background-color: #00ffff;
+  }
+  50% {
+    background-color: #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+  }
+  100% {
+    background-color: rgba(0, 255, 255, 0.4);
+  }
 }
 
 .btn__big {
