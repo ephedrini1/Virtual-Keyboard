@@ -1,5 +1,7 @@
 # Virtual-Keyboard
 
+# deploy: https://ephedrini1.github.io/Virtual-Keyboard/
+
 # RSS Виртуальная клавиатура
 
 #### Вам нужно создать виртуальную клавиатуру наподобие такой:
